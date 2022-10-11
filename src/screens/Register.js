@@ -8,8 +8,10 @@ import {
 } from 'react-native'
 import React from 'react'
 import Logo from '../assets/movie.png'
+import { useNavigation } from '@react-navigation/native'
 
 const Register = () => {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Image source={Logo} style={styles.logo} />
@@ -39,7 +41,12 @@ const Register = () => {
                 >
                     <Text style={styles.textButton}>Register</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Already have an account? <Text style={{ fontWeight: 'bold' }}> Sign in</Text></Text>
+                <Text style={styles.text}>Already have an account?
+                    <Text
+                        style={{ fontWeight: 'bold' }}
+                        onPress={() => navigation.goBack()}
+                    > Sign in</Text>
+                </Text>
             </View>
         </View>
     )

@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Logo from '../assets/movie.png'
+import { useNavigation } from '@react-navigation/native'
 
 const App = () => {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Image source={Logo} style={styles.logo} />
@@ -27,10 +29,16 @@ const App = () => {
                 />
                 <TouchableOpacity
                     style={styles.button}
+                    onPress={() => navigation.navigate('Homepage')}
                 >
                     <Text style={styles.textButton}>Login</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Don't have an account? <Text style={{ fontWeight: 'bold' }}> Sign Up</Text></Text>
+                <Text style={styles.text}>Don't have an account?
+                    <Text
+                        style={{ fontWeight: 'bold' }}
+                        onPress={() => navigation.navigate('RegisterScreen')}
+                    > Sign Up</Text>
+                </Text>
             </View>
         </View>
     )
