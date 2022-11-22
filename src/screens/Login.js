@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import Logo from '../assets/movie.png'
 import { useNavigation } from '@react-navigation/native'
@@ -28,6 +28,8 @@ const App = () => {
     //     })
     // }
     const handleLogin = async (value) => {
+        console.log('value', value);
+
         try {
             const response = await axios.post('http://192.168.122.41:3200/users/login', {
                 nip: value.nip,
@@ -35,14 +37,15 @@ const App = () => {
             })
             if (response.data.status == 200) {
                 console.log('response', response.data)
-                // navigation.navigate('Homepage')
-                // // AsyncStorage.setItem
-                // await AsyncStorage.setItem('password', value.password)
-                // await AsyncStorage.setItem('nip', value.nip)
-                // await AsyncStorage.setItem('name', response.data.data.nama)
+                navigation.navigate('Homepage')
+                // AsyncStorage.setItem
+                await AsyncStorage.setItem('password', value.password)
+                await AsyncStorage.setItem('nip', value.nip)
+                await AsyncStorage.setItem('name', response.data.data.nama)
             }
         } catch (error) {
             console.log(error.message)
+            ToastAndroid.show("Cek kembali nip dan password", ToastAndroid.SHORT)
         }
 
         // await axios.post('http://192.168.1.12:3200/users/login', {
