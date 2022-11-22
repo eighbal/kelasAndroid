@@ -1,10 +1,68 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../assets/movie.png'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
     const navigation = useNavigation();
+    const [nip, setNip] = useState("112");
+    const [password, setPassword] = useState("1234");
+
+    // const handleLogin = async (value) => {
+    //     await axios.post('http://192.168.1.12:3200/users/login', {
+    //         nip: value.nip,
+    //         password: value.password
+    //     }).then((response) => {
+    //         if (response.data.status == 200) {
+    //             console.log('response', response.data)
+    //             navigation.navigate('Homepage')
+    //             // AsyncStorage.setItem('password', response.data.data.password)
+    //             // AsyncStorage.setItem('nip', response.data.data.nip)
+    //             // AsyncStorage.setItem('name', response.data.data.name)
+    //         }
+    //     }
+    //     ).catch((error) => {
+    //         console.log(error.message)
+    //     })
+    // }
+    const handleLogin = async (value) => {
+        try {
+            const response = await axios.post('http://192.168.122.41:3200/users/login', {
+                nip: value.nip,
+                password: value.password
+            })
+            if (response.data.status == 200) {
+                console.log('response', response.data)
+                // navigation.navigate('Homepage')
+                // // AsyncStorage.setItem
+                // await AsyncStorage.setItem('password', value.password)
+                // await AsyncStorage.setItem('nip', value.nip)
+                // await AsyncStorage.setItem('name', response.data.data.nama)
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+
+        // await axios.post('http://192.168.1.12:3200/users/login', {
+        //     nip: value.nip,
+        //     password: value.password
+        // }).then((response) => {
+        //     if (response.data.status == 200) {
+        //         console.log('response', response.data)
+        //         navigation.navigate('Homepage')
+        //         // AsyncStorage.setItem('password', response.data.data.password)
+        //         // AsyncStorage.setItem('nip', response.data.data.nip)
+        //         // AsyncStorage.setItem('name', response.data.data.name)
+        //     }
+        // }
+        // ).catch((error) => {
+        //     console.log(error.message)
+        // })
+    }
+
+
     return (
         <View style={styles.container}>
             <Image source={Logo} style={styles.logo} />
@@ -21,16 +79,22 @@ const App = () => {
                     style={styles.input}
                     placeholder="Username"
                     placeholderTextColor="white"
+                    onChangeText={(nip) => setNip(nip)}
+                    value={nip}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Password"
                     placeholderTextColor="white"
+                    secureTextEntry={true}
+                    onChangeText={(password) => setPassword(password)}
+                    value={password}
                 />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('Homepage')}
-                >
+                    onPress={async () => {
+                        await handleLogin({ nip, password });
+                    }}>
                     <Text style={styles.textButton}>Login</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Don't have an account?
